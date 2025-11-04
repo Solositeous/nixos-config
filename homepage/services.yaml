@@ -1,12 +1,12 @@
 - Media:
-	- Sonarr:
-		icon: sonarr.png
-		href: http://sonarr.host.or.ip
-		widget:
-			type: sonarr
-			fields: ["wanted", "queued"]
-			url: http://sonarr.host.or.ip
-			key: apikeyapikeyapikeyapikeyapikey
+    - Sonarr:
+        icon: sonarr.png
+        href: http://sonarr.host.or.ip
+        widget:
+            type: sonarr
+            fields: ["wanted", "queued"]
+            url: http://sonarr.host.or.ip
+            key: apikeyapikeyapikeyapikeyapikey
 
 - Group A:
     - Service A:
