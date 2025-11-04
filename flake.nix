@@ -9,7 +9,7 @@
 		};
 	};
 
-	outputs = { self, nixpkgs, home-manager, ... }: {
+	outputs = { self, nixpkgs, home-manager, quadlet-nix, ... }: {
 		nixosConfigurations."srv1.jonesaus.com" = nixpkgs.lib.nixosSystem {
 			system = "x86_64-linux";
 			modules = [
