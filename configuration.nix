@@ -54,7 +54,7 @@
 				containerConfig = {
 					image = "ghcr.io/gethomepage/homepage:latest";
 					networks = [ "podman" networks.internal.ref ];
-					pod = pods.homepage.ref;
+					pod = pods.homepage-pod.ref;
 					volumes = [ "${volumes.homepageConfig.ref}:/app/config" ];
 					environments.HOMEPAGE_ALLOWED_HOSTS = "sr1.jonesaus.com";
 				};
@@ -76,7 +76,7 @@
             internal.networkConfig.subnets = [ "10.0.0.1/24" ];
         };
         pods = {
-            homepage = { };
+            homepage-pod = { };
         };
 		volumes = {
 			homepageConfig = {
