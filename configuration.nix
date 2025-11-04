@@ -123,6 +123,7 @@
 		restartTriggers = [ 
 			(builtins.readFile ./homepage/settings.yaml)
 			(builtins.readFile ./homepage/services.yaml)
+			(builtins.readFile ./homepage/docker.yaml)
 		];
 	};
 
@@ -130,6 +131,7 @@
 		restartTriggers = [ 
 			(builtins.readFile ./homepage/settings.yaml)
 			(builtins.readFile ./homepage/services.yaml)
+			(builtins.readFile ./homepage/docker.yaml)
 		];
 	};
 }
