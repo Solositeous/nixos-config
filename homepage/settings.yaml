@@ -1,6 +1,6 @@
 title: Jones Dashboard
 startUrl: https://dash.jonesaus.com
-backgroundImage: /images/background.jpg
+background: /images/background.jpg
 layout:
   Media:
     style: row

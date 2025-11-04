@@ -55,9 +55,10 @@
 					image = "ghcr.io/gethomepage/homepage:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [ 
-						"${volumes.homepageConfig.ref}:/app/config"
-						"${volumes.homepageImages.ref}:/app/public/images"
-					];
+					"${volumes.homepageConfig.ref}:/app/config"
+					"${volumes.homepageImages.ref}:/app/public/images"
+					"/run/podman/podman.sock:/var/run/docker.sock:ro"
+				];
 					environments = {
 						HOMEPAGE_ALLOWED_HOSTS = "dash.jonesaus.com";
 					};
