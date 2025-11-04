@@ -53,18 +53,20 @@
 			homepage = {
 				containerConfig = {
 					image = "ghcr.io/gethomepage/homepage:latest";
-					networks = [ "podman" networks.internal.ref ];
-					pod = pods.homepage-pod.ref;
+					networks = [ networks.internal.ref ];
 					volumes = [ "${volumes.homepageConfig.ref}:/app/config" ];
-					environments.HOMEPAGE_ALLOWED_HOSTS = "sr1.jonesaus.com";
+					environments.HOMEPAGE_ALLOWED_HOSTS = "dash.jonesaus.com";
 					healthCmd = "none";
 				};
-				serviceConfig.TimeoutStartSec = "60";
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
 			};
 			cloudflared = {
 				containerConfig = {
 					image = "cloudflare/cloudflared:latest";
-					networks = [ "podman" networks.internal.ref ];
+					networks = [ networks.internal.ref ];
 					exec = "tunnel --no-autoupdate run --token eyJhIjoiZDBkZmFhYWE3OTdjYjE1ZWRmNDQxZjE2N2JlYzhjNDMiLCJ0IjoiYjljMTNhODAtN2VkNi00NzUwLWE5ZjgtY2JhYTYwOTU4NjgyIiwicyI6Ik4yRXhNV1E0TTJRdE1qQTJZaTAwT0RKaUxUa3pZVFF0TkdVMlpqSmlZMkpqWVRZdyJ9";
 				};
 				serviceConfig = {
@@ -74,10 +76,7 @@
 			};
         };
         networks = {
-            internal.networkConfig.subnets = [ "10.0.0.1/24" ];
-        };
-        pods = {
-            homepage-pod = { };
+            internal.networkConfig.subnets = [ "10.0.0.0/24" ];
         };
 		volumes = {
 			homepageConfig = {
