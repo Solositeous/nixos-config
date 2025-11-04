@@ -1,0 +1,6 @@
+title: Jones Dashboard
+startUrl: https://dash.jonesaus.com
+layout:
+	Media:
+		style: row
+		columns: 4
