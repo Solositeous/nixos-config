@@ -121,12 +121,14 @@
 		'';
 		restartTriggers = [ 
 			(builtins.readFile ./homepage/settings.yaml)
+			(builtins.readFile ./homepage/services.yaml)
 		];
 	};
 
 	systemd.services.podman-homepage = {
 		restartTriggers = [ 
 			(builtins.readFile ./homepage/settings.yaml)
+			(builtins.readFile ./homepage/services.yaml)
 		];
 	};
 }
