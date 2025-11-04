@@ -109,7 +109,6 @@
 		before = [ "podman-homepage.service" ];
 		serviceConfig = {
 			Type = "oneshot";
-			RemainAfterExit = true;
 		};
 		script = ''
 			# Create a temporary container to access the volumes
@@ -120,6 +119,9 @@
 				docker.io/busybox:latest \
 				sh -c "cp /source/*.yaml /config/ 2>/dev/null || true; cp /source/*.jpg /images/ 2>/dev/null || true"
 		'';
+		restartTriggers = [ 
+			(builtins.readFile ./homepage/settings.yaml)
+		];
 	};
 }
 
