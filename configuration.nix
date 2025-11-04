@@ -123,5 +123,11 @@
 			(builtins.readFile ./homepage/settings.yaml)
 		];
 	};
+
+	systemd.services.podman-homepage = {
+		restartTriggers = [ 
+			(builtins.readFile ./homepage/settings.yaml)
+		];
+	};
 }
 
