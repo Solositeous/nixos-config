@@ -2,6 +2,7 @@
 	description = "NixOS - Jones Server";
 	inputs = {
 		nixpkgs.url = "nixpkgs/nixos-25.05";
+		quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 		home-manager = {
 			url = "github:nix-community/home-manager/release-25.05";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -22,6 +23,7 @@
 						backupFileExtension = "backup";
 					};
 				}
+				quadlet-nix.nixosModules.quadlet
 			];
 		};
 	};

@@ -1,141 +1,93 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+	imports = [
+		./hardware-configuration.nix
+	];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+	boot.loader.systemd-boot.enable = true;
+	boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+	boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  virtualisation.docker.enable = true;
+	virtualisation.docker.enable = true;
 
-  #networking.hostName = "srv1.jonesaus.com"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+	networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  time.timeZone = "Australia/Brisbane";
+	# Set your time zone.
+	time.timeZone = "Australia/Brisbane";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+	users.users.jones = {
+		isNormalUser = true;
+		extraGroups = [ "wheel" ];
+		packages = with pkgs; [
+			tree
+		];
+	};
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
+	environment.systemPackages = with pkgs; [
+		wget
+		git
+	];
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
+	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+	services.openssh.enable = true;
 
-  
+	networking.interfaces.enp1s0.ipv4.addresses = [
+		{
+			address = "103.1.215.91";
+			prefixLength = 31;
+		}
+	];
 
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+	networking.defaultGateway = "103.1.215.90";
+	networking.nameservers = [ "8.8.8.8" ];
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
+	system.stateVersion = "25.05";
 
-  # Enable sound.
-  # services.pulseaudio.enable = true;
-  # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.jones = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      tree
-    ];
-  };
-
-  # programs.firefox.enable = true;
-
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
-  environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    git
-  ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  networking.interfaces.enp1s0.ipv4.addresses = [
-    {
-      address = "103.1.215.91";
-      prefixLength = 31;
-    }
-  ];
-
-  networking.defaultGateway = "103.1.215.90";
-  networking.nameservers = [ "8.8.8.8" ];
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
-
-  # This option defines the first version of NixOS you have installed on this particular machine,
-  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
-  #
-  # Most users should NEVER change this value after the initial install, for any reason,
-  # even if you've upgraded your system to a new NixOS release.
-  #
-  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
-  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
-  # to actually do that.
-  #
-  # This value being lower than the current NixOS release does NOT mean your system is
-  # out of date, out of support, or vulnerable.
-  #
-  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
-  # and migrated your data accordingly.
-  #
-  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "25.05"; # Did you read the comment?
-
+	virtualisation.quadlet = let
+        inherit (config.virtualisation.quadlet) networks pods volumes;
+    in {
+        containers = {
+			homepage = {
+				containerConfig = {
+					image = "ghcr.io/gethomepage/homepage:latest";
+					networks = [ "podman" networks.internal.ref ];
+					pod = pods.homepage.ref;
+					volumes = [ "${volumes.homepageConfig.ref}:/app/config" ];
+					environments.HOMEPAGE_ALLOWED_HOSTS = "sr1.jonesaus.com";
+				};
+				serviceConfig.TimeoutStartSec = "60";
+			};
+			cloudflared = {
+				containerConfig = {
+					image = "cloudflare/cloudflared:latest";
+					networks = [ "podman" networks.internal.ref ];
+					cmd = [ "tunnel" "--no-autoupdate" "run" "--token" "eyJhIjoiZDBkZmFhYWE3OTdjYjE1ZWRmNDQxZjE2N2JlYzhjNDMiLCJ0IjoiYjljMTNhODAtN2VkNi00NzUwLWE5ZjgtY2JhYTYwOTU4NjgyIiwicyI6Ik4yRXhNV1E0TTJRdE1qQTJZaTAwT0RKaUxUa3pZVFF0TkdVMlpqSmlZMkpqWVRZdyJ9" ];
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+        };
+        networks = {
+            internal.networkConfig.subnets = [ "10.0.0.1/24" ];
+        };
+        pods = {
+            homepage = { };
+        };
+		volumes = {
+			homepageConfig = {
+				volumeConfig = {
+					name = "homepage-config";
+					labels = {
+						app = "homepage";
+					};
+				};
+			};
+		};
+    };
 }
 
