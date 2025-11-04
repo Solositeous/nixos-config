@@ -57,6 +57,7 @@
 					pod = pods.homepage-pod.ref;
 					volumes = [ "${volumes.homepageConfig.ref}:/app/config" ];
 					environments.HOMEPAGE_ALLOWED_HOSTS = "sr1.jonesaus.com";
+					healthCmd = "none";
 				};
 				serviceConfig.TimeoutStartSec = "60";
 			};
