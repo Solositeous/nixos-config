@@ -117,7 +117,7 @@
 				-v homepage-config:/config \
 				-v homepage-images:/images \
 				-v /etc/nixos/homepage:/source:ro \
-				${pkgs.busybox}/bin/busybox \
+				docker.io/busybox:latest \
 				sh -c "cp /source/*.yaml /config/ 2>/dev/null || true; cp /source/*.jpg /images/ 2>/dev/null || true"
 		'';
 	};
