@@ -100,193 +100,193 @@
 					Restart = "always";
 				};
 			};
-			mariaDB = {
-				containerConfig = {
-					image = "mariadb:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/mariadb:/var/lib/mysql"
-					];
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
-			homarr = {
-				containerConfig = {
-					image = "ghcr.io/homarr-labs/homarr:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/homarr:/appdata"
-						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
-					];
-					environments = {
-						SECRET_ENCRYPTION_KEY = "024484ba50bbd92f8c408c4bfb61e40d2890fda6ab59e3eb2645afbba6949f9a";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
+			# mariaDB = {
+			# 	containerConfig = {
+			# 		image = "mariadb:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/mariadb:/var/lib/mysql"
+			# 		];
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
+			# homarr = {
+			# 	containerConfig = {
+			# 		image = "ghcr.io/homarr-labs/homarr:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/homarr:/appdata"
+			# 			"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
+			# 		];
+			# 		environments = {
+			# 			SECRET_ENCRYPTION_KEY = "024484ba50bbd92f8c408c4bfb61e40d2890fda6ab59e3eb2645afbba6949f9a";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
 			# Media Containers
-			jellyfin = {
-				containerConfig = {
-					image = "linuxserver/jellyfin:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/jellyfin:/config"
-						"/s3data/media:/media"
-					];
-					devices = [
-						"/dev/dri:/dev/dri"
-					];
-					environments = {
-						PUID = "1000";
-						PGID = "1000";
-						TZ = "Australia/Brisbane";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
-			sonarr = {
-				containerConfig = {
-					image = "linuxserver/sonarr:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/sonarr:/config"
-						"/s3data/media:/media"
-						"${volumes.downloads.ref}:/downloads"
-					];
-					environments = {
-						PUID = "1000";
-						PGID = "1000";
-						TZ = "Australia/Brisbane";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
-			radarr = {
-				containerConfig = {
-					image = "linuxserver/radarr:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/radarr:/config"
-						"/s3data/media:/media"
-						"${volumes.downloads.ref}:/downloads"
-					];
-					environments = {
-						PUID = "1000";
-						PGID = "1000";
-						TZ = "Australia/Brisbane";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
-			readarr = {
-				containerConfig = {
-					image = "blampe/rreading-glasses:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/readarr:/config"
-						"/s3data/media:/media"
-						"${volumes.downloads.ref}:/downloads"
-					];
-					environments = {
-						PUID = "1000";
-						PGID = "1000";
-						TZ = "Australia/Brisbane";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
-			prowlarr = {
-				containerConfig = {
-					image = "linuxserver/prowlarr:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/prowlarr:/config"
-					];
-					environments = {
-						PUID = "1000";
-						PGID = "1000";
-						TZ = "Australia/Brisbane";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
-			jellyseerr = {
-				containerConfig = {
-					image = "jellyseerr/jellyseerr:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/jellyseerr:/app/config"
-						"/s3data/media:/media"
-					];
-					environments = {
-						PUID = "1000";
-						PGID = "1000";
-						TZ = "Australia/Brisbane";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
-			transmission = {
-				containerConfig = {
-					image = "linuxserver/transmission:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/transmission:/config"
-						"${volumes.downloads.ref}:/downloads"
-					];
-					environments = {
-						PUID = "1000";
-						PGID = "1000";
-						TZ = "Australia/Brisbane";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
+			# jellyfin = {
+			# 	containerConfig = {
+			# 		image = "linuxserver/jellyfin:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/jellyfin:/config"
+			# 			"/s3data/media:/media"
+			# 		];
+			# 		devices = [
+			# 			"/dev/dri:/dev/dri"
+			# 		];
+			# 		environments = {
+			# 			PUID = "1000";
+			# 			PGID = "1000";
+			# 			TZ = "Australia/Brisbane";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
+			# sonarr = {
+			# 	containerConfig = {
+			# 		image = "linuxserver/sonarr:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/sonarr:/config"
+			# 			"/s3data/media:/media"
+			# 			"${volumes.downloads.ref}:/downloads"
+			# 		];
+			# 		environments = {
+			# 			PUID = "1000";
+			# 			PGID = "1000";
+			# 			TZ = "Australia/Brisbane";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
+			# radarr = {
+			# 	containerConfig = {
+			# 		image = "linuxserver/radarr:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/radarr:/config"
+			# 			"/s3data/media:/media"
+			# 			"${volumes.downloads.ref}:/downloads"
+			# 		];
+			# 		environments = {
+			# 			PUID = "1000";
+			# 			PGID = "1000";
+			# 			TZ = "Australia/Brisbane";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
+			# readarr = {
+			# 	containerConfig = {
+			# 		image = "blampe/rreading-glasses:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/readarr:/config"
+			# 			"/s3data/media:/media"
+			# 			"${volumes.downloads.ref}:/downloads"
+			# 		];
+			# 		environments = {
+			# 			PUID = "1000";
+			# 			PGID = "1000";
+			# 			TZ = "Australia/Brisbane";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
+			# prowlarr = {
+			# 	containerConfig = {
+			# 		image = "linuxserver/prowlarr:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/prowlarr:/config"
+			# 		];
+			# 		environments = {
+			# 			PUID = "1000";
+			# 			PGID = "1000";
+			# 			TZ = "Australia/Brisbane";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
+			# jellyseerr = {
+			# 	containerConfig = {
+			# 		image = "jellyseerr/jellyseerr:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/jellyseerr:/app/config"
+			# 			"/s3data/media:/media"
+			# 		];
+			# 		environments = {
+			# 			PUID = "1000";
+			# 			PGID = "1000";
+			# 			TZ = "Australia/Brisbane";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
+			# transmission = {
+			# 	containerConfig = {
+			# 		image = "linuxserver/transmission:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/transmission:/config"
+			# 			"${volumes.downloads.ref}:/downloads"
+			# 		];
+			# 		environments = {
+			# 			PUID = "1000";
+			# 			PGID = "1000";
+			# 			TZ = "Australia/Brisbane";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
         };
         networks = {
             internal.networkConfig.subnets = [ "10.0.0.0/24" ];
