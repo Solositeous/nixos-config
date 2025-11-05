@@ -81,11 +81,13 @@
 					volumes = [
 						"/s3data:/opt/s3fs/bucket:rshared"
 					];
-					extraOptions = [
-						"--privileged"
-						"--device=/dev/fuse"
-						"--cap-add=SYS_ADMIN"
+					devices = [
+						"/dev/fuse"
 					];
+					addCapabilities = [
+						"SYS_ADMIN"
+					];
+					securityLabelDisable = true;
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
