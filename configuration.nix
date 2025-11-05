@@ -178,7 +178,8 @@
 					};
 				};
 				serviceConfig = {
-					TimeoutStartSec = "60";
+					TimeoutStartSec = "300";
+					TimeoutStopSec = "120";
 					Restart = "unless-stopped";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
