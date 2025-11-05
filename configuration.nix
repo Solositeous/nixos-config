@@ -67,20 +67,6 @@
 					Restart = "always";
 				};
 			};
-			portainer = {
-				containerConfig = {
-					image = "portainer/portainer-ce:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
-						"${volumes.portainerData.ref}:/data"
-					];
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-				};
-			};
 			s3fs = {
 				containerConfig = {
 					image = "efrecon/s3fs:latest";
@@ -100,6 +86,20 @@
 					Restart = "always";
 				};
 			};
+			portainer = {
+				containerConfig = {
+					image = "portainer/portainer-ce:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
+						"${volumes.portainerData.ref}:/data"
+					];
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
 			mariaDB = {
 				containerConfig = {
 					image = "mariadb:latest";
@@ -111,6 +111,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
 			homarr = {
@@ -128,6 +130,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
 			# Media Containers
@@ -151,6 +155,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
 			sonarr = {
@@ -171,6 +177,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
 			radarr = {
@@ -191,6 +199,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
 			readarr = {
@@ -211,6 +221,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
 			prowlarr = {
@@ -229,6 +241,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
 			jellyseerr = {
@@ -248,6 +262,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
 			transmission = {
@@ -267,6 +283,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
 				};
 			};
         };
