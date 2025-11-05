@@ -105,7 +105,7 @@
 					image = "mariadb:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/mariadb:/var/lib/mysql:Z"
+						"/s3data/mariadb:/var/lib/mysql"
 					];
 				};
 				serviceConfig = {
@@ -120,7 +120,7 @@
 					image = "ghcr.io/homarr-labs/homarr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/homarr:/appdata:Z"
+						"/s3data/configs/homarr:/appdata"
 						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
 					];
 					environments = {
@@ -140,8 +140,8 @@
 					image = "linuxserver/jellyfin:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/jellyfin:/config:Z"
-						"/s3data/media:/media:Z"
+						"/s3data/configs/jellyfin:/config"
+						"/s3data/media:/media"
 					];
 					devices = [
 						"/dev/dri:/dev/dri"
@@ -164,8 +164,8 @@
 					image = "linuxserver/sonarr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/sonarr:/config:Z"
-						"/s3data/media:/media:Z"
+						"/s3data/configs/sonarr:/config"
+						"/s3data/media:/media"
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
@@ -186,8 +186,8 @@
 					image = "linuxserver/radarr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/radarr:/config:Z"
-						"/s3data/media:/media:Z"
+						"/s3data/configs/radarr:/config"
+						"/s3data/media:/media"
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
@@ -208,8 +208,8 @@
 					image = "blampe/rreading-glasses:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/readarr:/config:Z"
-						"/s3data/media:/media:Z"
+						"/s3data/configs/readarr:/config"
+						"/s3data/media:/media"
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
@@ -230,7 +230,7 @@
 					image = "linuxserver/prowlarr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/prowlarr:/config:Z"
+						"/s3data/configs/prowlarr:/config"
 					];
 					environments = {
 						PUID = "1000";
@@ -250,8 +250,8 @@
 					image = "jellyseerr/jellyseerr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/jellyseerr:/app/config:Z"
-						"/s3data/media:/media:Z"
+						"/s3data/configs/jellyseerr:/app/config"
+						"/s3data/media:/media"
 					];
 					environments = {
 						PUID = "1000";
@@ -271,7 +271,7 @@
 					image = "linuxserver/transmission:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/transmission:/config:Z"
+						"/s3data/configs/transmission:/config"
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
