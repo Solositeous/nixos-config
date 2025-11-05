@@ -274,22 +274,6 @@
             internal.networkConfig.subnets = [ "10.0.0.0/24" ];
         };
 		volumes = {
-			homepageConfig = {
-				volumeConfig = {
-					name = "homepage-config";
-					labels = {
-						app = "homepage";
-					};
-				};
-			};
-			homepageImages = {
-				volumeConfig = {
-					name = "homepage-images";
-					labels = {
-						app = "homepage";
-					};
-				};
-			};
 			portainerData = {
 				volumeConfig = {
 					name = "portainer-data";
@@ -308,36 +292,5 @@
 			};
 		};
     };
-
-	systemd.services.homepage-config-sync = {
-		description = "Sync homepage configuration to Docker volume";
-		wantedBy = [ "multi-user.target" ];
-		before = [ "podman-homepage.service" ];
-		serviceConfig = {
-			Type = "oneshot";
-		};
-		script = ''
-			# Create a temporary container to access the volumes
-			${pkgs.podman}/bin/podman run --rm \
-				-v homepage-config:/config \
-				-v homepage-images:/images \
-				-v ${./homepage}:/source:ro \
-				docker.io/busybox:latest \
-				sh -c "cp /source/*.yaml /config/ 2>/dev/null || true; cp /source/*.jpg /images/ 2>/dev/null || true"
-		'';
-		restartTriggers = [ 
-			(builtins.readFile ./homepage/settings.yaml)
-			(builtins.readFile ./homepage/services.yaml)
-			(builtins.readFile ./homepage/docker.yaml)
-		];
-	};
-
-	systemd.services.podman-homepage = {
-		restartTriggers = [ 
-			(builtins.readFile ./homepage/settings.yaml)
-			(builtins.readFile ./homepage/services.yaml)
-			(builtins.readFile ./homepage/docker.yaml)
-		];
-	};
 }
 
