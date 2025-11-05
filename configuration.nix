@@ -98,7 +98,6 @@
 				containerConfig = {
 					image = "python:3-alpine";
 					networks = [ networks.internal.ref ];
-					publishPorts = [ "8000:8000" ];
 					volumes = [
 						"/s3data:/s3data:ro"
 						"/etc/nixos/scripts/s3fsHealthCheck.py:/healthcheck.py:ro"
@@ -185,7 +184,7 @@
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
-					Restart = "always";
+					Restart = "unless-stopped";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
 				};
@@ -207,7 +206,7 @@
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
-					Restart = "always";
+					Restart = "unless-stopped";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
 				};
@@ -229,7 +228,7 @@
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
-					Restart = "always";
+					Restart = "unless-stopped";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
 				};
@@ -251,7 +250,7 @@
 			# 	};
 			# 	serviceConfig = {
 			# 		TimeoutStartSec = "60";
-			# 		Restart = "always";
+			# 		Restart = "unless-stopped";
 			# 		After = [ "s3fs.service" ];
 			# 		Requires = [ "s3fs.service" ];
 			# 	};
@@ -271,7 +270,7 @@
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
-					Restart = "always";
+					Restart = "unless-stopped";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
 				};
@@ -292,7 +291,7 @@
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
-					Restart = "always";
+					Restart = "unless-stopped";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
 				};
@@ -313,7 +312,7 @@
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
-					Restart = "always";
+					Restart = "unless-stopped";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
 				};
