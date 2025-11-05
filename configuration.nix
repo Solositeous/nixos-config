@@ -255,7 +255,7 @@
 			};
 			jellyseerr = {
 				containerConfig = {
-					image = "jellyseerr/jellyseerr:latest";
+					image = "fallenbagel/jellyseerr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
 						"/s3data/configs/jellyseerr:/app/config:Z"
