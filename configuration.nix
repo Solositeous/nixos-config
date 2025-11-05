@@ -155,8 +155,8 @@
 						"/dev/dri:/dev/dri"
 					];
 					environments = {
-						PUID = "1000";
-						PGID = "1000";
+						PUID = "0";
+						PGID = "0";
 						TZ = "Australia/Brisbane";
 					};
 				};
@@ -177,8 +177,8 @@
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
-						PUID = "1000";
-						PGID = "1000";
+						PUID = "0";
+						PGID = "0";
 						TZ = "Australia/Brisbane";
 					};
 				};
@@ -199,8 +199,8 @@
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
-						PUID = "1000";
-						PGID = "1000";
+						PUID = "0";
+						PGID = "0";
 						TZ = "Australia/Brisbane";
 					};
 				};
@@ -241,8 +241,8 @@
 						"/s3data/configs/prowlarr:/config:Z"
 					];
 					environments = {
-						PUID = "1000";
-						PGID = "1000";
+						PUID = "0";
+						PGID = "0";
 						TZ = "Australia/Brisbane";
 					};
 				};
@@ -262,8 +262,8 @@
 						"/s3data/media:/media:Z"
 					];
 					environments = {
-						PUID = "1000";
-						PGID = "1000";
+						PUID = "0";
+						PGID = "0";
 						TZ = "Australia/Brisbane";
 					};
 				};
@@ -283,8 +283,8 @@
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
-						PUID = "1000";
-						PGID = "1000";
+						PUID = "0";
+						PGID = "0";
 						TZ = "Australia/Brisbane";
 					};
 				};
