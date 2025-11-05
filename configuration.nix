@@ -69,7 +69,7 @@
 			};
 			s3fs = {
 				containerConfig = {
-					image = "efrecon/s3fs:latest";
+					image = "efrecon/s3fs:1.92";
 					networks = [ networks.internal.ref ];
 					environments = {
 						AWS_S3_URL = "s3.ap-southeast-2.wasabisys.com";
