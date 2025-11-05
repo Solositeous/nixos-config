@@ -34,6 +34,11 @@
 
 	services.openssh.enable = true;
 
+	# Ensure /s3data directory exists for s3fs container
+	systemd.tmpfiles.rules = [
+		"d /s3data 0755 root root -"
+	];
+
 	networking.interfaces.enp1s0.ipv4.addresses = [
 		{
 			address = "103.1.215.91";
@@ -47,33 +52,217 @@
 	system.stateVersion = "25.05";
 
 	virtualisation.quadlet = let
-        inherit (config.virtualisation.quadlet) networks pods volumes;
+		inherit (config.virtualisation.quadlet) networks pods volumes;
     in {
         containers = {
-			homepage = {
+			# Core Containers
+			cloudflared = {
 				containerConfig = {
-					image = "ghcr.io/gethomepage/homepage:latest";
+					image = "cloudflare/cloudflared:latest";
 					networks = [ networks.internal.ref ];
-					volumes = [ 
-					"${volumes.homepageConfig.ref}:/app/config"
-					"${volumes.homepageImages.ref}:/app/public/images"
-					"/run/podman/podman.sock:/var/run/docker.sock:ro"
-				];
-					environments = {
-						HOMEPAGE_ALLOWED_HOSTS = "dash.jonesaus.com";
-					};
-					healthCmd = "none";
+					exec = "tunnel --no-autoupdate run --token eyJhIjoiZDBkZmFhYWE3OTdjYjE1ZWRmNDQxZjE2N2JlYzhjNDMiLCJ0IjoiYjljMTNhODAtN2VkNi00NzUwLWE5ZjgtY2JhYTYwOTU4NjgyIiwicyI6Ik4yRXhNV1E0TTJRdE1qQTJZaTAwT0RKaUxUa3pZVFF0TkdVMlpqSmlZMkpqWVRZdyJ9";
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "always";
 				};
 			};
-			cloudflared = {
+			portainer = {
 				containerConfig = {
-					image = "cloudflare/cloudflared:latest";
+					image = "portainer/portainer-ce:latest";
 					networks = [ networks.internal.ref ];
-					exec = "tunnel --no-autoupdate run --token eyJhIjoiZDBkZmFhYWE3OTdjYjE1ZWRmNDQxZjE2N2JlYzhjNDMiLCJ0IjoiYjljMTNhODAtN2VkNi00NzUwLWE5ZjgtY2JhYTYwOTU4NjgyIiwicyI6Ik4yRXhNV1E0TTJRdE1qQTJZaTAwT0RKaUxUa3pZVFF0TkdVMlpqSmlZMkpqWVRZdyJ9";
+					volumes = [
+						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
+						"${volumes.portainerData.ref}:/data"
+					];
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			s3fs = {
+				containerConfig = {
+					image = "efrecon/s3fs:latest";
+					networks = [ networks.internal.ref ];
+					environments = {
+						AWS_S3_URL = "s3.ap-southeast-2.wasabisys.com";
+						AWS_S3_ACCESS_KEY_ID = "SACUZBT3E97W1ZAXUF7A";
+						AWS_S3_SECRET_ACCESS_KEY = "FKS8NX0MAujoNGIQ9CVjKenNbQ9V0lLogHdBSbRW";
+						AWS_S3_BUCKET = "jonesausfiles";
+					};
+					volumes = [
+						"/s3data:/opt/s3fs/bucket:rshared"
+					];
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			mariaDB = {
+				containerConfig = {
+					image = "mariadb:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/mariadb:/var/lib/mysql:Z"
+					];
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			homarr = {
+				containerConfig = {
+					image = "ghcr.io/homarr-labs/homarr:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/homarr:/appdata:Z"
+						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
+					];
+					environments = {
+						SECRET_ENCRYPTION_KEY = "024484ba50bbd92f8c408c4bfb61e40d2890fda6ab59e3eb2645afbba6949f9a";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			# Media Containers
+			jellyfin = {
+				containerConfig = {
+					image = "linuxserver/jellyfin:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/jellyfin:/config:Z"
+						"/s3data/media:/media:Z"
+					];
+					devices = [
+						"/dev/dri:/dev/dri"
+					];
+					environments = {
+						PUID = "1000";
+						PGID = "1000";
+						TZ = "Australia/Brisbane";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			sonarr = {
+				containerConfig = {
+					image = "linuxserver/sonarr:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/sonarr:/config:Z"
+						"/s3data/media:/media:Z"
+						"${volumes.downloads.ref}:/downloads"
+					];
+					environments = {
+						PUID = "1000";
+						PGID = "1000";
+						TZ = "Australia/Brisbane";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			radarr = {
+				containerConfig = {
+					image = "linuxserver/radarr:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/radarr:/config:Z"
+						"/s3data/media:/media:Z"
+						"${volumes.downloads.ref}:/downloads"
+					];
+					environments = {
+						PUID = "1000";
+						PGID = "1000";
+						TZ = "Australia/Brisbane";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			readarr = {
+				containerConfig = {
+					image = "blampe/rreading-glasses:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/readarr:/config:Z"
+						"/s3data/media:/media:Z"
+						"${volumes.downloads.ref}:/downloads"
+					];
+					environments = {
+						PUID = "1000";
+						PGID = "1000";
+						TZ = "Australia/Brisbane";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			prowlarr = {
+				containerConfig = {
+					image = "linuxserver/prowlarr:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/prowlarr:/config:Z"
+					];
+					environments = {
+						PUID = "1000";
+						PGID = "1000";
+						TZ = "Australia/Brisbane";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			jellyseerr = {
+				containerConfig = {
+					image = "jellyseerr/jellyseerr:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/jellyseerr:/app/config:Z"
+						"/s3data/media:/media:Z"
+					];
+					environments = {
+						PUID = "1000";
+						PGID = "1000";
+						TZ = "Australia/Brisbane";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
+			transmission = {
+				containerConfig = {
+					image = "linuxserver/transmission:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/transmission:/config:Z"
+						"${volumes.downloads.ref}:/downloads"
+					];
+					environments = {
+						PUID = "1000";
+						PGID = "1000";
+						TZ = "Australia/Brisbane";
+					};
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
@@ -98,6 +287,22 @@
 					name = "homepage-images";
 					labels = {
 						app = "homepage";
+					};
+				};
+			};
+			portainerData = {
+				volumeConfig = {
+					name = "portainer-data";
+					labels = {
+						app = "portainer";
+					};
+				};
+			};
+			downloads = {
+				volumeConfig = {
+					name = "downloads";
+					labels = {
+						app = "media";
 					};
 				};
 			};
