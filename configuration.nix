@@ -211,28 +211,28 @@
 					Requires = [ "s3fs.service" ];
 				};
 			};
-			readarr = {
-				containerConfig = {
-					image = "blampe/rreading-glasses:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/configs/readarr:/config:Z"
-						"/s3data/media:/media:Z"
-						"${volumes.downloads.ref}:/downloads"
-					];
-					environments = {
-						PUID = "1000";
-						PGID = "1000";
-						TZ = "Australia/Brisbane";
-					};
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
+			# readarr = {
+			# 	containerConfig = {
+			# 		image = "blampe/rreading-glasses:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/configs/readarr:/config:Z"
+			# 			"/s3data/media:/media:Z"
+			# 			"${volumes.downloads.ref}:/downloads"
+			# 		];
+			# 		environments = {
+			# 			PUID = "1000";
+			# 			PGID = "1000";
+			# 			TZ = "Australia/Brisbane";
+			# 		};
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
 			prowlarr = {
 				containerConfig = {
 					image = "linuxserver/prowlarr:latest";
