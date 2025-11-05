@@ -165,7 +165,7 @@
 					image = "linuxserver/jellyfin:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/jellyfin:/:Z"
+						"/s3data/configs/jellyfin:/config:Z"
 						"/s3data/media:/media:Z"
 					];
 					devices = [
