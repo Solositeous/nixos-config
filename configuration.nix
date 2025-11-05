@@ -101,7 +101,7 @@
 					publishPorts = [ "8000:8000" ];
 					volumes = [
 						"/s3data:/s3data:ro"
-						"./scripts/s3fsHealthCheck.py:/healthcheck.py:ro"
+						"/etc/nixos/scripts/s3fsHealthCheck.py:/healthcheck.py:ro"
 					];
 					exec = "python3 /healthcheck.py";
 				};
