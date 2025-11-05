@@ -94,6 +94,46 @@
 					Restart = "always";
 				};
 			};
+			s3fsHealthcheck = {
+				containerConfig = {
+					image = "python:3-alpine";
+					networks = [ networks.internal.ref ];
+					publishPorts = [ "8000:8000" ];
+					volumes = [
+						"/s3data:/s3data:ro"
+					];
+					exec = ''sh -c "python3 -c \"
+						import http.server
+						import socketserver
+						import os
+
+						class HealthCheckHandler(http.server.BaseHTTPRequestHandler):
+							def do_GET(self):
+								if os.path.ismount('/s3data') or os.path.exists('/s3data'):
+									self.send_response(200)
+									self.send_header('Content-type', 'text/plain')
+									self.end_headers()
+									self.wfile.write(b'S3FS OK')
+								else:
+									self.send_response(503)
+									self.send_header('Content-type', 'text/plain')
+									self.end_headers()
+									self.wfile.write(b'S3FS NOT MOUNTED')
+							
+							def log_message(self, format, *args):
+								pass
+
+						with socketserver.TCPServer(('0.0.0.0', 8000), HealthCheckHandler) as httpd:
+							httpd.serve_forever()
+						\""'';
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
+				};
+			};
 			portainer = {
 				containerConfig = {
 					image = "portainer/portainer-ce:latest";
@@ -108,21 +148,21 @@
 					Restart = "always";
 				};
 			};
-			mariaDB = {
-				containerConfig = {
-					image = "mariadb:latest";
-					networks = [ networks.internal.ref ];
-					volumes = [
-						"/s3data/mariadb:/var/lib/mysql:Z"
-					];
-				};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "always";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
-				};
-			};
+			# mariaDB = {
+			# 	containerConfig = {
+			# 		image = "mariadb:latest";
+			# 		networks = [ networks.internal.ref ];
+			# 		volumes = [
+			# 			"/s3data/mariadb:/var/lib/mysql:Z"
+			# 		];
+			# 	};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "always";
+			# 		After = [ "s3fs.service" ];
+			# 		Requires = [ "s3fs.service" ];
+			# 	};
+			# };
 			homarr = {
 				containerConfig = {
 					image = "ghcr.io/homarr-labs/homarr:latest";
