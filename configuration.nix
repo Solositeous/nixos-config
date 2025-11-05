@@ -9,6 +9,7 @@
 	boot.loader.efi.canTouchEfiVariables = true;
 
 	boot.kernelPackages = pkgs.linuxPackages_latest;
+	boot.kernelModules = [ "fuse" ];
 
 	virtualisation.docker.enable = true;
 
@@ -79,6 +80,11 @@
 					};
 					volumes = [
 						"/s3data:/opt/s3fs/bucket:rshared"
+					];
+					extraOptions = [
+						"--privileged"
+						"--device=/dev/fuse"
+						"--cap-add=SYS_ADMIN"
 					];
 				};
 				serviceConfig = {
