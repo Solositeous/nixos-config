@@ -142,7 +142,7 @@
 					Requires = [ "s3fs.service" ];
 				};
 			};
-			Media Containers
+			# Media Containers
 			jellyfin = {
 				containerConfig = {
 					image = "linuxserver/jellyfin:latest";
