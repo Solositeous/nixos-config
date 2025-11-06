@@ -284,7 +284,7 @@
 				containerConfig = {
 					image = "blampe/rreading-glasses:hardcover";
 					networks = [ networks.internal.ref ];
-					exec = "/main serve --verbose";
+					exec = "serve";
 					volumes = [
 						"/s3data/configs/readarr:/config:Z"
 						"/s3data/media:/media:Z"
