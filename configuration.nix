@@ -136,7 +136,7 @@
 						"/home/jones:/home/jones"
 						"/s3data/configs/vscode-tunnel:/root/.vscode-cli"
 					];
-					exec = "/bin/sh -c 'apk add --no-cache curl && curl -Lk https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64 --output vscode_cli.tar.gz && tar -xf vscode_cli.tar.gz && ./code tunnel --accept-server-license-terms --name jones-dev'";
+					exec = "sh -c \"apk add --no-cache curl tar && curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' --output vscode_cli.tar.gz && tar -xf vscode_cli.tar.gz && ./code tunnel --accept-server-license-terms --name jones-dev\"";
 				};
 				serviceConfig = {
 					TimeoutStartSec = "300";
