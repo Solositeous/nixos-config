@@ -312,7 +312,7 @@
 			};
 			readarr = {
 				containerConfig = {
-					image = "pennydreadful/bookshelf:hardcover";
+					image = "ghcr.io/pennydreadful/bookshelf:hardcover";
 					networks = [ networks.internal.ref ];
 					volumes = [
 						"/s3data/configs/readarr:/config:Z"
