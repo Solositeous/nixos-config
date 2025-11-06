@@ -125,6 +125,27 @@
 					Restart = "always";
 				};
 			};
+			dev = {
+				containerConfig = {
+					image = "codercom/code-server:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data:/s3data:Z"
+						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
+						"/home/jones:/home/jones"
+						"/s3data/configs/code-server:/home/coder/.config:Z"
+					];
+					environments = {
+						GITHUB_AUTH = "true";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
+				};
+			};
 			# mariaDB = {
 			# 	containerConfig = {
 			# 		image = "mariadb:latest";
