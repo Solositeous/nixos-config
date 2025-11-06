@@ -352,13 +352,14 @@
 					};
 				};
 			};
-      vscode = {
-        volumeConfig = {
-          name = "vscode-data";
-          labels = {
-            app = "devcontainer";
-          };
-        };
+			vscode = {
+				volumeConfig = {
+					name = "vscode-data";
+					labels = {
+						app = "devcontainer";
+					};
+				};
+			};
 		};
     };
 }
