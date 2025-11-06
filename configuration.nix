@@ -129,6 +129,7 @@
 				containerConfig = {
 					image = "codercom/code-server:latest";
 					networks = [ networks.internal.ref ];
+					user = "0:0";
 					volumes = [
 						"/s3data:/s3data:Z"
 						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
