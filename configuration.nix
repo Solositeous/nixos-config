@@ -127,23 +127,19 @@
 			};
 			dev = {
 				containerConfig = {
-					image = "codercom/code-server:latest";
+					image = "alpine:latest";
 					networks = [ networks.internal.ref ];
 					user = "0:0";
 					volumes = [
 						"/s3data:/s3data:Z"
 						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
 						"/home/jones:/home/jones"
-						"/s3data/configs/code-server:/home/coder/.config"
+						"/s3data/configs/vscode-tunnel:/root/.vscode-cli"
 					];
-					environments = {
-						PUID = "0";
-						PGID = "0";
-						GITHUB_AUTH = "true";
-					};
+					exec = "/bin/sh -c 'apk add --no-cache curl && curl -Lk https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64 --output vscode_cli.tar.gz && tar -xf vscode_cli.tar.gz && ./code tunnel --accept-server-license-terms --name jones-dev'";
 				};
 				serviceConfig = {
-					TimeoutStartSec = "60";
+					TimeoutStartSec = "300";
 					Restart = "always";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
