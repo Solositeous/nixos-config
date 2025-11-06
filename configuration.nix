@@ -320,6 +320,7 @@
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
+						METADATA_URL = "http://readarrapi:8788";
 						PUID = "0";
 						PGID = "0";
 						TZ = "Australia/Brisbane";
