@@ -125,6 +125,20 @@
 					Restart = "always";
 				};
 			};
+			dashdot = {
+				containerConfig = {
+					image = "mauricenino/dashdot:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
+					];
+					privileged = true;
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
 			dev = {
 				containerConfig = {
 					image = "reverie89/vscode-tunnel";
