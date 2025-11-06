@@ -55,6 +55,7 @@
 	virtualisation.quadlet = let
 		inherit (config.virtualisation.quadlet) networks pods volumes;
     in {
+		autoEscape = true;
         containers = {
 			# Core Containers
 			cloudflared = {
