@@ -132,7 +132,6 @@
 					volumes = [
 						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
 					];
-					privileged = true;
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
@@ -147,7 +146,7 @@
 					volumes = [
 						"/s3data:/s3data:Z"
 						"/home/jones:/home/jones"
-            "${volumes.vscode.ref}:/root"
+						"${volumes.vscode.ref}:/root"
 					];
 				};
 				serviceConfig = {
