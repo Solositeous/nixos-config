@@ -133,10 +133,10 @@
 						"/s3data:/s3data:Z"
 						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
 						"/home/jones:/home/jones"
+						"/s3data/configs/vscode-tunnel:/root/.vscode-cli"
 					];
 					environments = {
-						VSCODE_CLI_TUNNEL_NAME = "jones-dev";
-						VSCODE_CLI_USE_RELEASE_CHANNEL = "stable";
+						TUNNEL_NAME = "jones-dev";
 					};
 				};
 				serviceConfig = {
