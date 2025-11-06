@@ -276,7 +276,7 @@
 					image = "postgres:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/configs/readarrdb:/var/lib/postgresql/data:Z"
+						"/configs/readarrdb:/var/lib/postgresql:Z"
 					];
 					environments = {
 						POSTGRES_USER = "readarr";
