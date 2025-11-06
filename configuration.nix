@@ -136,6 +136,8 @@
 						"/s3data/configs/code-server:/home/coder/.config"
 					];
 					environments = {
+						PUID = "0";
+						PGID = "0";
 						GITHUB_AUTH = "true";
 					};
 				};
