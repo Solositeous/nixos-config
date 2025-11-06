@@ -38,6 +38,16 @@
 	# Ensure /s3data directory exists for s3fs container
 	systemd.tmpfiles.rules = [
 		"d /s3data 0755 root root -"
+		"d /configs 0755 root root -"
+		"d /configs/jellyfin 0755 root root -"
+		"d /configs/sonarr 0755 root root -"
+		"d /configs/radarr 0755 root root -"
+		"d /configs/readarrdb 0755 root root -"
+		"d /configs/readarrapi 0755 root root -"
+		"d /configs/readarr 0755 root root -"
+		"d /configs/prowlarr 0755 root root -"
+		"d /configs/jellyseerr 0755 root root -"
+		"d /configs/transmission 0755 root root -"
 	];
 
 	networking.interfaces.enp1s0.ipv4.addresses = [
@@ -197,7 +207,7 @@
 					image = "linuxserver/jellyfin:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/jellyfin:/config:Z"
+						"/configs/jellyfin:/config:Z"
 						"/s3data/media:/media:Z"
 					];
 					devices = [
@@ -222,7 +232,7 @@
 					image = "linuxserver/sonarr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/sonarr:/config:Z"
+						"/configs/sonarr:/config:Z"
 						"/s3data/media:/media:Z"
 						"${volumes.downloads.ref}:/downloads"
 					];
@@ -244,7 +254,7 @@
 					image = "linuxserver/radarr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/radarr:/config:Z"
+						"/configs/radarr:/config:Z"
 						"/s3data/media:/media:Z"
 						"${volumes.downloads.ref}:/downloads"
 					];
@@ -266,7 +276,7 @@
 					image = "postgres:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/readarrdb:/var/lib/postgresql/data:Z"
+						"/configs/readarrdb:/var/lib/postgresql/data:Z"
 					];
 					environments = {
 						POSTGRES_USER = "readarr";
@@ -286,7 +296,7 @@
 					image = "blampe/rreading-glasses:hardcover";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/readarrapi:/config:Z"
+						"/configs/readarrapi:/config:Z"
 						"/s3data/media:/media:Z"
 						"${volumes.downloads.ref}:/downloads"
 					];
@@ -315,7 +325,7 @@
 					image = "ghcr.io/pennydreadful/bookshelf:hardcover";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/readarr:/config:Z"
+						"/configs/readarr:/config:Z"
 						"/s3data/media:/media:Z"
 						"${volumes.downloads.ref}:/downloads"
 					];
@@ -338,7 +348,7 @@
 					image = "linuxserver/prowlarr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/prowlarr:/config:Z"
+						"/configs/prowlarr:/config:Z"
 					];
 					environments = {
 						PUID = "0";
@@ -358,7 +368,7 @@
 					image = "fallenbagel/jellyseerr:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/jellyseerr:/app/config:Z"
+						"/configs/jellyseerr:/app/config:Z"
 						"/s3data/media:/media:Z"
 					];
 					environments = {
@@ -379,7 +389,7 @@
 					image = "linuxserver/transmission:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/transmission:/config:Z"
+						"/configs/transmission:/config:Z"
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
