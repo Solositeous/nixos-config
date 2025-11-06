@@ -301,13 +301,13 @@
 			# 			TZ = "Australia/Brisbane";
 			# 		};
 			# 	};
-				serviceConfig = {
-					TimeoutStartSec = "60";
-					Restart = "unless-stopped";
-					After = [ "s3fs.service" "readarrdb.service" ];
-					Requires = [ "s3fs.service" "readarrdb.service" ];
-				};
-			};
+			# 	serviceConfig = {
+			# 		TimeoutStartSec = "60";
+			# 		Restart = "unless-stopped";
+			# 		After = [ "s3fs.service" "readarrdb.service" ];
+			# 		Requires = [ "s3fs.service" "readarrdb.service" ];
+			# 	};
+			# };
 			prowlarr = {
 				containerConfig = {
 					image = "linuxserver/prowlarr:latest";
