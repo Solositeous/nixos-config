@@ -137,7 +137,7 @@
 					environments = {
 						MACHINE_NAME = "jones-dev";
 					};
-          exec = "code tunnel --accept-server-license-terms --provider github"
+          exec = "code tunnel --accept-server-license-terms --provider github";
 				};
 				serviceConfig = {
 					TimeoutStartSec = "300";
