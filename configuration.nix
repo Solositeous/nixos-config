@@ -127,20 +127,18 @@
 			};
 			dev = {
 				containerConfig = {
-					image = "reverie89/vscode-tunnel:latest";
+					image = "reverie89/vscode-tunnel";
+					hostname = "jones-dev";
 					networks = [ networks.internal.ref ];
 					volumes = [
 						"/s3data:/s3data:Z"
 						"/home/jones:/home/jones"
+            "${volumes.vscode.ref}:/root"
 					];
-					environments = {
-						MACHINE_NAME = "jones-dev";
-					};
-          exec = "code tunnel --accept-server-license-terms --provider github";
 				};
 				serviceConfig = {
 					TimeoutStartSec = "300";
-					Restart = "always";
+					Restart = "unless-stopped";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
 				};
@@ -354,6 +352,13 @@
 					};
 				};
 			};
+      vscode = {
+        volumeConfig = {
+          name = "vscode-data";
+          labels = {
+            app = "devcontainer";
+          };
+        };
 		};
     };
 }
