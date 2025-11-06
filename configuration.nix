@@ -281,12 +281,12 @@
 					Requires = [ "s3fs.service" ];
 				};
 			};
-			readarr = {
+			readarrapi = {
 				containerConfig = {
 					image = "blampe/rreading-glasses:hardcover";
 					networks = [ networks.internal.ref ];
 					volumes = [
-						"/s3data/configs/readarr:/config:Z"
+						"/s3data/configs/readarrapi:/config:Z"
 						"/s3data/media:/media:Z"
 						"${volumes.downloads.ref}:/downloads"
 					];
@@ -308,6 +308,28 @@
 					Restart = "unless-stopped";
 					After = [ "s3fs.service" "readarrdb.service" ];
 					Requires = [ "s3fs.service" "readarrdb.service" ];
+				};
+			};
+			readarr = {
+				containerConfig = {
+					image = "pennydreadful/bookshelf:hardcover";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/readarr:/config:Z"
+						"/s3data/media:/media:Z"
+						"${volumes.downloads.ref}:/downloads"
+					];
+					environments = {
+						PUID = "0";
+						PGID = "0";
+						TZ = "Australia/Brisbane";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "unless-stopped";
+					After = [ "s3fs.service" "readarrapi.service" ];
+					Requires = [ "s3fs.service" "readarrapi.service" ];
 				};
 			};
 			prowlarr = {
