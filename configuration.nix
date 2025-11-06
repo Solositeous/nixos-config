@@ -127,16 +127,17 @@
 			};
 			dev = {
 				containerConfig = {
-					image = "alpine:latest";
+					image = "ilteoood/vscode-remote-tunnels:latest";
 					networks = [ networks.internal.ref ];
-					user = "0:0";
 					volumes = [
 						"/s3data:/s3data:Z"
 						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
 						"/home/jones:/home/jones"
-						"/s3data/configs/vscode-tunnel:/root/.vscode-cli"
 					];
-					exec = "sh -c \"apk add --no-cache curl tar && curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' --output vscode_cli.tar.gz && tar -xf vscode_cli.tar.gz && ./code tunnel --accept-server-license-terms --name jones-dev\"";
+					environments = {
+						VSCODE_CLI_TUNNEL_NAME = "jones-dev";
+						VSCODE_CLI_USE_RELEASE_CHANNEL = "stable";
+					};
 				};
 				serviceConfig = {
 					TimeoutStartSec = "300";
