@@ -133,7 +133,7 @@
 						"/s3data:/s3data:Z"
 						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
 						"/home/jones:/home/jones"
-						"/s3data/configs/code-server:/home/coder/.config:Z"
+						"/s3data/configs/code-server:/home/coder/.config"
 					];
 					environments = {
 						GITHUB_AUTH = "true";
