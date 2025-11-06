@@ -131,7 +131,6 @@
 					networks = [ networks.internal.ref ];
 					volumes = [
 						"/s3data:/s3data:Z"
-						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
 						"/home/jones:/home/jones"
 					];
 					environments = {
