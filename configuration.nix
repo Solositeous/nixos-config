@@ -290,7 +290,7 @@
 						"/s3data/media:/media:Z"
 						"${volumes.downloads.ref}:/downloads"
 					];
-					entrypoint = "/usr/local/bin/rreading-glasses";
+					entrypoint = "/main";
 					exec = [ "serve" ];
 					environments = {
 						HARDCOVER_AUTH = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJIYXJkY292ZXIiLCJ2ZXJzaW9uIjoiOCIsImp0aSI6ImQxOTNiMjY4LTdmMTAtNDUyOC1iYWU1LTNiMTU2ODFmOTdhNSIsImFwcGxpY2F0aW9uSWQiOjIsInN1YiI6IjUzNTQ3IiwiYXVkIjoiMSIsImlkIjoiNTM1NDciLCJsb2dnZWRJbiI6dHJ1ZSwiaWF0IjoxNzYyNDMxMDA3LCJleHAiOjE3OTM5NjcwMDcsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJ1c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1yb2xlIjoidXNlciIsIlgtaGFzdXJhLXVzZXItaWQiOiI1MzU0NyJ9LCJ1c2VyIjp7ImlkIjo1MzU0N319.LoMGWbqbbbqMJN2PhU7-7WV60HmdWxcyEdp99r55dI8";
