@@ -127,17 +127,17 @@
 			};
 			dev = {
 				containerConfig = {
-					image = "ilteoood/vscode-remote-tunnels:latest";
+					image = "reverie89/vscode-tunnel:latest";
 					networks = [ networks.internal.ref ];
 					volumes = [
 						"/s3data:/s3data:Z"
 						"/var/run/podman/podman.sock:/var/run/docker.sock:ro"
 						"/home/jones:/home/jones"
-						"/s3data/configs/vscode-tunnel:/root/.vscode-cli"
 					];
 					environments = {
-						TUNNEL_NAME = "jones-dev";
+						MACHINE_NAME = "jones-dev";
 					};
+          exec = "code tunnel --accept-server-license-terms --provider github"
 				};
 				serviceConfig = {
 					TimeoutStartSec = "300";
