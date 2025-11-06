@@ -260,16 +260,42 @@
 					Requires = [ "s3fs.service" ];
 				};
 			};
+			readarrdb = {
+				containerConfig = {
+					image = "postgres:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/s3data/configs/readarrdb:/var/lib/postgresql/data:Z"
+					];
+					environments = {
+						POSTGRES_USER = "readarr";
+						POSTGRES_PASSWORD = "zpNH4w3rjD05siRRzLID!";
+						POSTGRES_DB = "readarr";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+					After = [ "s3fs.service" ];
+					Requires = [ "s3fs.service" ];
+				};
+			};
 			readarr = {
 				containerConfig = {
-					image = "blampe/rreading-glasses:latest";
+					image = "blampe/rreading-glasses:hardcover";
 					networks = [ networks.internal.ref ];
+					exec = "/main serve --verbose";
 					volumes = [
 						"/s3data/configs/readarr:/config:Z"
 						"/s3data/media:/media:Z"
 						"${volumes.downloads.ref}:/downloads"
 					];
 					environments = {
+						HARDCOVER_AUTH = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJIYXJkY292ZXIiLCJ2ZXJzaW9uIjoiOCIsImp0aSI6ImQxOTNiMjY4LTdmMTAtNDUyOC1iYWU1LTNiMTU2ODFmOTdhNSIsImFwcGxpY2F0aW9uSWQiOjIsInN1YiI6IjUzNTQ3IiwiYXVkIjoiMSIsImlkIjoiNTM1NDciLCJsb2dnZWRJbiI6dHJ1ZSwiaWF0IjoxNzYyNDMxMDA3LCJleHAiOjE3OTM5NjcwMDcsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJ1c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1yb2xlIjoidXNlciIsIlgtaGFzdXJhLXVzZXItaWQiOiI1MzU0NyJ9LCJ1c2VyIjp7ImlkIjo1MzU0N319.LoMGWbqbbbqMJN2PhU7-7WV60HmdWxcyEdp99r55dI8";
+						POSTGRES_HOST = "readarrdb";
+						POSTGRES_DATABASE = "readarr";
+						POSTGRES_USER = "readarr";
+						POSTGRES_PASSWORD = "zpNH4w3rjD05siRRzLID!";
 						PUID = "0";
 						PGID = "0";
 						TZ = "Australia/Brisbane";
@@ -278,8 +304,8 @@
 				serviceConfig = {
 					TimeoutStartSec = "60";
 					Restart = "unless-stopped";
-					After = [ "s3fs.service" ];
-					Requires = [ "s3fs.service" ];
+					After = [ "s3fs.service" "readarrdb.service" ];
+					Requires = [ "s3fs.service" "readarrdb.service" ];
 				};
 			};
 			prowlarr = {
