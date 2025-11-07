@@ -131,7 +131,7 @@
 					volumes = [
 						"/etc/nixos/scripts/mariadbHealthCheck.py:/healthcheck.py:ro"
 					];
-					exec = ''sh -c "apk add --no-cache mysql-client && python3 /healthcheck.py"'';
+					exec = "python3 /healthcheck.py";;
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
