@@ -29,6 +29,7 @@
 	environment.systemPackages = with pkgs; [
 		wget
 		git
+		mysql
 	];
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
