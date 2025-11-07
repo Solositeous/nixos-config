@@ -49,6 +49,7 @@
 		"d /configs/prowlarr 0755 root root -"
 		"d /configs/jellyseerr 0755 root root -"
 		"d /configs/transmission 0755 root root -"
+		"d /configs/mariadb 0755 root root -"
 	];
 
 	networking.interfaces.enp1s0.ipv4.addresses = [
@@ -121,6 +122,22 @@
 					Restart = "always";
 					After = [ "s3fs.service" ];
 					Requires = [ "s3fs.service" ];
+				};
+			};
+			mariadbHealthcheck = {
+				containerConfig = {
+					image = "python:3-alpine";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/etc/nixos/scripts/mariadbHealthCheck.py:/healthcheck.py:ro"
+					];
+					exec = ''sh -c "apk add --no-cache mysql-client && python3 /healthcheck.py"'';
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+					After = [ "mariaDB.service" ];
+					Requires = [ "mariaDB.service" ];
 				};
 			};
 			portainer = {
