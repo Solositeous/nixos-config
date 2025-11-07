@@ -167,21 +167,22 @@
 					Requires = [ "s3fs.service" ];
 				};
 			};
-			# mariaDB = {
-			# 	containerConfig = {
-			# 		image = "mariadb:latest";
-			# 		networks = [ networks.internal.ref ];
-			# 		volumes = [
-			# 			"/s3data/mariadb:/var/lib/mysql:Z"
-			# 		];
-			# 	};
-			# 	serviceConfig = {
-			# 		TimeoutStartSec = "60";
-			# 		Restart = "always";
-			# 		After = [ "s3fs.service" ];
-			# 		Requires = [ "s3fs.service" ];
-			# 	};
-			# };
+			mariaDB = {
+				containerConfig = {
+					image = "mariadb:latest";
+					networks = [ networks.internal.ref ];
+					volumes = [
+						"/configs/mariadb:/var/lib/mysql:Z"
+					];
+					environments = {
+						MYSQL_ROOT_PASSWORD = "oWFKLOgqTlNw25it0ih3";
+					};
+				};
+				serviceConfig = {
+					TimeoutStartSec = "60";
+					Restart = "always";
+				};
+			};
 			homarr = {
 				containerConfig = {
 					image = "ghcr.io/homarr-labs/homarr:latest";
