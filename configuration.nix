@@ -29,7 +29,7 @@
 	environment.systemPackages = with pkgs; [
 		wget
 		git
-		mysql
+		mariadb
 	];
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
