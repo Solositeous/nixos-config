@@ -177,6 +177,7 @@
 					environments = {
 						MYSQL_ROOT_PASSWORD = "oWFKLOgqTlNw25it0ih3";
 					};
+					publishPorts = [ "3306:3306" ];
 				};
 				serviceConfig = {
 					TimeoutStartSec = "60";
