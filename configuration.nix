@@ -30,6 +30,7 @@
 		wget
 		git
 		mariadb
+		python
 	];
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
