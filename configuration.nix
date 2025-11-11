@@ -32,6 +32,7 @@
 		mariadb
 		python312
 		python312Packages.pip
+    ffmpeg
 	];
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
